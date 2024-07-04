@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-
+import morgan from "morgan";
 const PORT = 3000;
 const HOST = "localhost";
 
@@ -26,6 +26,10 @@ const projects: Project[] = [
   }
 ];
 
+app.use(morgan("dev"));
+app.use(express.json());
+
+// route
 app.get("/projects", (req: Request, res: Response) => {
   res.status(200).json(projects);
 });
@@ -40,6 +44,19 @@ app.get("/projects/:id", (req: Request, res: Response) => {
   }
 
   res.status(200).json(project);
+});
+
+app.post("/projects", (req: Request, res: Response) => {
+  const body = req.body;
+
+  const newProject = {
+    id: crypto.randomUUID(),
+    ...body
+  };
+
+  projects.push(newProject);
+
+  res.status(201).json(newProject);
 });
 
 app.listen(PORT, HOST, () => {
