@@ -1,9 +1,34 @@
-import express from "express";
+import express, { Request, Response } from "express";
 
 const PORT = 3000;
 const HOST = "localhost";
 
 const app = express();
+
+enum PROJECT_STATUS {
+  DRAFT = "draft",
+  IN_PROGRESS = "in progress",
+  COMPLETE = "complete"
+}
+
+type Project = {
+  id: string;
+  title: string;
+  description?: string;
+  status: PROJECT_STATUS;
+};
+
+const projects: Project[] = [
+  {
+    id: "375cfa17-60df-44c6-9b78-5252ca361e47",
+    title: "my first project",
+    status: PROJECT_STATUS.DRAFT
+  }
+];
+
+app.get("/projects", (req: Request, res: Response) => {
+  res.status(200).json(projects);
+});
 
 app.listen(PORT, HOST, () => {
   console.log(`[server]: listening at http://${HOST}:${PORT}`);
