@@ -1,4 +1,5 @@
 import { Request, Response, Router } from "express";
+import { CustomError } from "../middleware/error-handler";
 import { projects } from "../models/Project";
 
 export const router = Router();
@@ -16,7 +17,8 @@ router.get("/:id", (req: Request, res: Response) => {
   const project = projects.find((project) => project.id === id);
 
   if (!project) {
-    res.status(404).json({ error: `record not found with id ${id}` });
+    // res.status(404).json({ error: `record not found with id ${id}` });
+    throw new CustomError(404, "Not Found");
   }
 
   res.status(200).json(project);
