@@ -30,6 +30,18 @@ app.get("/projects", (req: Request, res: Response) => {
   res.status(200).json(projects);
 });
 
+app.get("/projects/:id", (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  const project = projects.find((project) => project.id === id);
+
+  if (!project) {
+    res.status(404).json({ error: `record not found with id ${id}` });
+  }
+
+  res.status(200).json(project);
+});
+
 app.listen(PORT, HOST, () => {
   console.log(`[server]: listening at http://${HOST}:${PORT}`);
 });
